@@ -61,8 +61,10 @@ def cosineSimilarity(item1Vector, item2Vector):
     item1VectorNorm = np.linalg.norm(item1Vector, ord=2)
     item2VectorNorm = np.linalg.norm(item2Vector, ord=2)
     if item1VectorNorm is 0 or item2VectorNorm is 0:
+        # 如果有一个向量为0向量，无法计算相似度
         return 0
     if np.equal(item1Vector, item2Vector).all():
+        # 如果两个向量相同，相似度为1，但在后续推荐中会筛掉已阅item
         return 1
     return np.dot(item1Vector, item2Vector) / (item1VectorNorm * item2VectorNorm)
 
@@ -121,5 +123,5 @@ itemNameList = userItemMatrix.columns
 print(itemNameList)
 similarityMatrix = createItemSimilarityMatrix(userItemMatrix, itemNameList)
 print(similarityMatrix)
-userResult = getItemCF(similarityMatrix, userItemMatrix.sample(1, axis=0, random_state=1), "MovieID")
+userResult = getItemCF(similarityMatrix, userItemMatrix.sample(1, axis=0, random_state=1))
 print(userResult)
